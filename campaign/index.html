@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Открыть кампанию — WB Radar Helper</title>
+<style>body{font:17px/1.5 system-ui,sans-serif;margin:24px auto;padding:0 18px;max-width:560px;color:#222}a{display:block;margin:18px 0;padding:12px;border:1px solid #7b2cbf;border-radius:8px;color:#572080}small{color:#555}</style>
+</head>
+<body>
+<h1>WB Radar Helper</h1>
+<p id="status">Ссылка неполная или некорректная. Откройте ссылку кампании из сообщения Telegram.</p>
+<div id="actions" hidden>
+<a id="app">Открыть приложение вручную</a>
+<a id="fallback" rel="noreferrer">Открыть через прежнюю страницу</a>
+<small>Если приложение не открылось, используйте прежнюю страницу. На компьютере она позволяет открыть кампанию в установленном расширении. Настройки кампании эта страница не меняет.</small>
+</div>
+<script>
+// Читается только положительный CID. Переходы выполняются лишь по нажатию пользователя.
+(function () {
+  'use strict';
+  var match = /^\?cid=([1-9]\d{0,11})$/.exec(window.location.search);
+  if (window.location.pathname !== '/campaign/' || window.location.hash || !match) return;
+  var cid = match[1];
+  document.getElementById('status').textContent = 'Кампания CID ' + cid;
+  document.getElementById('app').href = 'wbradar://campaign/' + cid;
+  document.getElementById('fallback').href = 'https://script.google.com/macros/s/AKfycbywM_F4J6fSqUPwOulK6C7pmuDxNXdu2kddHupVmTemCmgcg5JrYua3RVz8VYusz7uP/exec?action=open&cid=' + cid;
+  document.getElementById('actions').hidden = false;
+})();
+</script>
+</body>
+</html>
